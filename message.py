@@ -5,7 +5,7 @@ import schedule
 import time
 import random
 
-
+# send good morning texts to your significant loved ones
 MORNING_MESSAGES = ["Hey baby. I hope you had a nice morning <3",
                     "Good Morning you sexy beast",
                     "GIMORI",
@@ -27,6 +27,7 @@ MORNING_MESSAGES = ["Hey baby. I hope you had a nice morning <3",
                     "The light that shines from you is more vital to me than the sunlight in the morning. "
                     "Rise and shine, my beautiful queen."]
 
+# send league messages to your friend. Remind them to get on!
 LEAGUE_MESSAGES = ["eyyyyy you wanna duo queue?",
                    "What's up baus",
                    "Let's party with rift herald",
@@ -37,7 +38,7 @@ LEAGUE_MESSAGES = ["eyyyyy you wanna duo queue?",
                    "Hey baby let's explore the jungle together"]
 
 
-def send_message(messages: list):
+def send_message(messages: list, twilio_number: str, recipient_number: str):
     """
     Sends a message to a phone number of your choosing. Since we are using the free trial version of Twilio,
     we can only send messages to verified phone numbers
@@ -49,13 +50,15 @@ def send_message(messages: list):
     account_sid = os.environ['TWILIO_ACCOUNT_SID']
     auth_token = os.environ['TWILIO_AUTH_TOKEN']
     client = Client(account_sid, auth_token)
+    # randomizes which message from the list you send to a person.
     string = messages[random.randint(0, len(messages) - 1)]
 
+    # Enter the twilio phone number you are using and the phone number you are messaging to.
     message = client.messages \
         .create(
         body=string,
-        from_='+12518664402',
-        to='+19498385884'
+        from_=twilio_number,
+        to=recipient_number
     )
 
 
@@ -97,12 +100,21 @@ def receive_message():
         i += 1
 
 
-schedule.every().day.at("09:00").do(send_message, MORNING_MESSAGES)
+"""
+Allows you to automate the task of sending text messages using schedule.
+Sends one message at 9:00 AM and another message at 4:00 PM.
+Remember that the function send_message has 3 parameters: messages, twilio_number, recipient_number.
+Sample twilio_number = '+12518920091'
+sample recipient_number = '+19496338213'
+"""
+# sample phone numbers include "+19498234109"
+
+schedule.every().day.at("09:00").do(send_message, MORNING_MESSAGES, 'twilio_number', 'recipient_number')
 # prints out which morning message you sent
 schedule.every().day.at("09:00").do(message_sent)
-schedule.every().day.at("16:18").do(send_message, LEAGUE_MESSAGES)
+schedule.every().day.at("16:00").do(send_message, LEAGUE_MESSAGES, 'twilio_number', 'recipient_number')
 # prints out which league messages you sent
-schedule.every().day.at("16:18").do(message_sent)
+schedule.every().day.at("16:00").do(message_sent)
 
 if __name__ == "__main__":
     receive_message()
