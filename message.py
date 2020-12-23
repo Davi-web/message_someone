@@ -5,7 +5,7 @@ import schedule
 import time
 import random
 
-MESSAGE_JAYDEN = ["Hey BB wanna go smoke?", "Why you looking extra cute today"]
+
 MORNING_MESSAGES = ["Hey baby. I hope you had a nice morning <3",
                     "Good Morning you sexy beast",
                     "GIMORI",
@@ -28,6 +28,9 @@ MORNING_MESSAGES = ["Hey baby. I hope you had a nice morning <3",
                     "Rise and shine, my beautiful queen."]
 
 LEAGUE_MESSAGES = ["eyyyyy you wanna duo queue?",
+                   "What's up baus",
+                   "Let's party with rift herald",
+                   "Road to Challenger??",
                    "Hey Baus. Wanna hop on league?",
                    "Summoner's rift time?",
                    "Ready to pop off in league?",
@@ -52,7 +55,7 @@ def send_message(messages: list):
         .create(
         body=string,
         from_='+12518664402',
-        to='+19499336399'
+        to='+19498385884'
     )
 
 
@@ -97,9 +100,9 @@ def receive_message():
 schedule.every().day.at("09:00").do(send_message, MORNING_MESSAGES)
 # prints out which morning message you sent
 schedule.every().day.at("09:00").do(message_sent)
-schedule.every().day.at("12:58").do(send_message, LEAGUE_MESSAGES)
+schedule.every().day.at("16:18").do(send_message, LEAGUE_MESSAGES)
 # prints out which league messages you sent
-schedule.every().day.at("12:58").do(message_sent)
+schedule.every().day.at("16:18").do(message_sent)
 
 if __name__ == "__main__":
     receive_message()
